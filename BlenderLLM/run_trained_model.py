@@ -3,7 +3,7 @@ import torch
 import os
 import sys
 
-model_path = "/remote-home1/wxzhang/BlenderLLM/deepseek/final_model"
+model_path = "../train/trained_model"
 
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16).cuda()
@@ -34,7 +34,6 @@ prompt_text = prompt_text[len(full_prompt):].strip()
 print(prompt_text)
 
 srun_command = (
-    # f'srun -p fnlp-4090d --cpus-per-task=4 --mem-per-cpu=4G --gres=gpu:1 '
     f'python chat.py --model_name ../models/BlenderLLM --prompt "{prompt_text}"'
 )
 

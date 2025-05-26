@@ -3,17 +3,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 from tqdm import tqdm
 
-# 路径配置
-# model_path = "/remote-home1/wxzhang/BlenderLLM/deepseek/final_model_cadbench"
-model_path = "/remote-home1/wxzhang/BlenderLLM/deepseek/final_model"
+model_path = "trained_model"
 input_file = "dataset/CADBench_test.jsonl"
-output_file = "dataset/output/instructions_nocadbench.json"
+output_file = "dataset/output/instructions.json"
 
-# 加载模型和tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16).cuda()
 
-# 固定前缀模板
 append_text = (
     "You are a helpful assistant for 3D modeling. Your job is to rewrite a vague object name "
     "into a highly detailed design instruction in English, suitable for generating CAD or 3D models.\n\n"
@@ -28,14 +24,12 @@ append_text = (
     "Instruction:"
 )
 
-# 加载输入数据
 data = []
 with open(input_file, "r", encoding="utf-8") as f:
     for line in f:
-        if line.strip():  # 忽略空行
+        if line.strip(): 
             data.append(json.loads(line))
             
-# 开始生成
 results = []
 for item in tqdm(data, desc="Generating Instructions"):
     name = item.get("name", "").strip()
@@ -65,7 +59,6 @@ for item in tqdm(data, desc="Generating Instructions"):
         "criteria": criteria,
     })
 
-# 保存结果
 with open(output_file, "w", encoding="utf-8") as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
 

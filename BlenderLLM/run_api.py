@@ -3,9 +3,8 @@ import sys
 from openai import OpenAI
 
 client = OpenAI(
-    # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
-    api_key="sk-eb7ba83159834f96bfceba6590ccb563",
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+    api_key="",
+    base_url="",
 )
 
 append_text = ("这条指令是给出的物体非常简略，没有具体的描述。"
@@ -31,7 +30,6 @@ prompt_text = completion.choices[0].message.content.strip()
 print(prompt_text)
 
 srun_command = (
-    # f'srun -p fnlp-4090d --cpus-per-task=4 --mem-per-cpu=4G --gres=gpu:1 '
     f'python chat.py --model_name ../models/BlenderLLM --prompt "{prompt_text}"'
 )
 

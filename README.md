@@ -14,6 +14,15 @@ python retrain.py
 #### 调用API
 ```
 cd BlenderLLM
+```
+```
+# 配置API_KEY
+client = OpenAI(
+    api_key="",
+    base_url="",
+)
+```
+```
 python run_api.py "your instruction"
 ```
 #### 使用trained model
